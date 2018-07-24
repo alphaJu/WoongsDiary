@@ -108,7 +108,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         if let indexPath = (self.calendar.collectionView.indexPathForItem(at: p)){
             let cell = self.calendar.collectionView.cellForItem(at: indexPath) as! FSCalendarCell
-                    
+        
             date = self.formatter2.string(from: self.calendar.date(for: cell)!)
         }else{
             print("error handling long press")
