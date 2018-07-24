@@ -317,8 +317,9 @@ class PopUpViewController: UIViewController {
 
 extension PopUpViewController: SettingsViewControllerDelegate {
     func settingsViewControllerFinished(settingsViewController: SettingsViewController) {
+        print("extentsion popup view")
         self.brushWidth = settingsViewController.brush
-        self.widthForBrush = self.brushWidth
+        //self.widthForBrush = self.brushWidth
         
         self.opacity = settingsViewController.opacity
         

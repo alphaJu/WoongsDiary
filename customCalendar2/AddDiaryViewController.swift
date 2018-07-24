@@ -187,6 +187,17 @@ class AddDiaryViewController: UIViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let settingsViewController = segue.destination as! SettingsViewController
+        settingsViewController.delegate = self
+        settingsViewController.brush = brushWidth
+        settingsViewController.opacity = opacity
+        
+        settingsViewController.red = red
+        settingsViewController.green = green
+        settingsViewController.blue = blue
+    }
+    
 
     /*
     // MARK: - Navigation
@@ -199,10 +210,11 @@ class AddDiaryViewController: UIViewController {
     */
 }
     
-   /* extension PopUpViewController: SettingsViewControllerDelegate {
+    extension AddDiaryViewController: SettingsViewControllerDelegate {
         func settingsViewControllerFinished(settingsViewController: SettingsViewController) {
+            print("extension add diary")
             self.brushWidth = settingsViewController.brush
-            self.widthForBrush = self.brushWidth
+            //self.widthForBrush = self.brushWidth
             
             self.opacity = settingsViewController.opacity
             
@@ -211,5 +223,5 @@ class AddDiaryViewController: UIViewController {
             self.blue = settingsViewController.blue
         }
 
-    }*/
+    }
 
