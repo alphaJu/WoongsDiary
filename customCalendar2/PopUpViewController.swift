@@ -26,10 +26,13 @@ class PopUpViewController: UIViewController {
     var green: CGFloat = 0.0
     var blue: CGFloat = 0.0
     var black: CGFloat = 0.0
-    var brushWidth: CGFloat = 10.0
+    var brushWidth: CGFloat = 3.0
     var opacity: CGFloat = 1.0
     var swiped = false
     var date:String?
+    
+    var widthForErase: CGFloat = 15.0
+    var widthForBrush: CGFloat = 3.0
     
     
     let colors: [(CGFloat, CGFloat, CGFloat)] = [
@@ -50,7 +53,7 @@ class PopUpViewController: UIViewController {
         //        }
         
         
-        mainImageView.image = UIImage(named: "icon1")
+        //mainImageView.image = UIImage(named: "icon1")
         
         let realm = try! Realm()
         let predicate = NSPredicate(format: "date = %@",date!)
@@ -58,6 +61,8 @@ class PopUpViewController: UIViewController {
         if(day?.filepath != nil){
             mainImageView.image = load(fileName: (day!.filepath))
             print("test")
+        }else{
+            mainImageView.image = UIImage(named:"icon1")
         }
         
 //        mainImageView.image = canvas
@@ -83,6 +88,7 @@ class PopUpViewController: UIViewController {
         let context = UIGraphicsGetCurrentContext()
         tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: mainImageView.frame.size.width, height: mainImageView.frame.size.height))
         
+        
         //2
         context?.move(to: fromPoint)
         context?.addLine(to: toPoint)
@@ -92,6 +98,7 @@ class PopUpViewController: UIViewController {
         context?.setLineWidth(brushWidth)
         context?.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
         context?.setBlendMode(CGBlendMode.normal)
+        
         
         //4
         context?.strokePath()
@@ -113,6 +120,83 @@ class PopUpViewController: UIViewController {
             lastPoint = currentPoint
         }
     }
+    /*
+     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+     guard let touch = touches.first else { return }
+     
+     
+     UIGraphicsBeginImageContextWithOptions(mainImageView.frame.size, false, 0.0)
+     let context = UIGraphicsGetCurrentContext()
+     
+     // Draw previous image into context
+     tempImageView.image?.draw(in: CGRect(x: 0, y: 0, width: mainImageView.frame.size.width, height: mainImageView.frame.size.height))
+     
+     // 1
+     var touches = [UITouch]()
+     
+     // Coalesce Touches
+     // 2
+     if let coalescedTouches = event?.coalescedTouches(for: touch) {
+     touches = coalescedTouches
+     } else {
+     touches.append(touch)
+     }
+     
+     // 4
+     for touch in touches {
+     self.drawStroke(context: context, touch: touch)
+     }
+     
+     // 1
+     tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+     // 2
+     /*if let predictedTouches = event?.predictedTouches(for: touch) {
+     for touch in predictedTouches {
+     self.drawStroke(context: context, touch: touch)
+     }
+     }
+     
+     // Update image
+     tempImageView.image = UIGraphicsGetImageFromCurrentImageContext()
+     */UIGraphicsEndImageContext()
+     }
+     
+     private func drawStroke(context: CGContext!, touch: UITouch) {
+     let previousLocation = touch.previousLocation(in: tempImageView)
+     let location = touch.location(in: tempImageView)
+     
+     //var lineWidth: CGFloat
+     /*  if touch.type == .stylus {
+     // Calculate line width for drawing stroke
+     if touch.altitudeAngle < self.tiltThreshold {
+     lineWidth = self.lineWidthForShading(context: context, touch: touch)
+     } else {
+     lineWidth = self.lineWidthForDrawing(context: context, touch: touch)
+     }
+     // Set color
+     self.drawColor.setStroke()
+     //self.pencilTexture.setStroke()
+     } else {
+     // Erase with finger
+     lineWidth = touch.majorRadius / 2
+     self.eraserColor.setStroke()
+     }*/
+     
+     context.setLineCap(CGLineCap.round)
+     context.setLineWidth(brushWidth)
+     context.setStrokeColor(red: red, green: green, blue: blue, alpha: 1.0)
+     context.setBlendMode(CGBlendMode.normal)
+     
+     // Set up the points
+     context.move(to: CGPoint(x: previousLocation.x, y: previousLocation.y))
+     context.addLine(to: CGPoint(x: location.x, y: location.y))
+     
+     // Draw the stroke
+     context.strokePath()
+     }
+     
+     
+     */
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !swiped {
@@ -160,6 +244,9 @@ class PopUpViewController: UIViewController {
         //3
         if index == colors.count - 1 {
             opacity = 1.0
+            brushWidth = widthForErase
+        }else {
+            brushWidth = widthForBrush
         }
     }
     
@@ -231,6 +318,8 @@ class PopUpViewController: UIViewController {
 extension PopUpViewController: SettingsViewControllerDelegate {
     func settingsViewControllerFinished(settingsViewController: SettingsViewController) {
         self.brushWidth = settingsViewController.brush
+        self.widthForBrush = self.brushWidth
+        
         self.opacity = settingsViewController.opacity
         
         self.red = settingsViewController.red

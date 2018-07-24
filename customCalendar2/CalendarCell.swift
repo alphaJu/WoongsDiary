@@ -52,7 +52,7 @@ class CalendarCell: FSCalendarCell {
          
          self.shapeLayer.isHidden = true
          */
-        
+        print("cell init")
         print("size : \(self.bounds)")
         
         let view = UIView(frame: self.bounds)
@@ -108,6 +108,9 @@ class CalendarCell: FSCalendarCell {
         if self.isPlaceholder {
             self.eventIndicator.isHidden = true
             self.titleLabel.textColor = UIColor.yellow
+        }else if self.dateIsToday {
+            self.titleLabel.textColor = UIColor.blue
+            self.subtitleLabel.textColor = UIColor.blue
         }
     }
     

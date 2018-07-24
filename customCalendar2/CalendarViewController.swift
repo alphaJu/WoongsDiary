@@ -34,6 +34,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     // MARK:- Life cycle
     
     override func loadView() {
+        print("calendar - loadview")
         
         let view = UIView(frame: UIScreen.main.bounds)
         view.backgroundColor = UIColor.groupTableViewBackground
@@ -50,7 +51,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
         
         calendar.calendarHeaderView.backgroundColor = UIColor.blue.withAlphaComponent(0.1)
         calendar.calendarWeekdayView.backgroundColor = UIColor.red.withAlphaComponent(0.1)
-        calendar.appearance.eventSelectionColor = UIColor.blue
+       // calendar.appearance.eventSelectionColor = UIColor.blue
         calendar.appearance.titleOffset = CGPoint(x:15,y:-20)
         calendar.appearance.subtitleOffset = CGPoint(x:15, y:-10)
         
@@ -166,7 +167,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //날짜에 맞는 이미지 넣는 것 같음
     func calendar(_ calendar: FSCalendar, imageFor date: Date) -> UIImage? {
-        //if date ==
+        print("calendar - imagefor")
         let realm = try! Realm()
         let test: String?
         test = self.formatter2.string(from: date)
@@ -225,6 +226,7 @@ class CalendarViewController: UIViewController, FSCalendarDataSource, FSCalendar
     
     //subtitle 설정(공휴일)
     func calendar(_ calendar:FSCalendar, subtitleFor date: Date)-> String?{
+        print("calendar - subtitlefor")
         return "공휴일"
     }
     

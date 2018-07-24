@@ -35,7 +35,7 @@ class SettingsViewController: UIViewController {
     
     
     
-    var brush: CGFloat = 10.0
+    var brush: CGFloat = 3.0
     var opacity: CGFloat = 1.0
     
     weak var delegate: SettingsViewControllerDelegate?
@@ -58,7 +58,7 @@ class SettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        sliderBrush.value = Float(brush)
+        sliderBrush.value = Float(brush)*5
         labelBrush.text = NSString(format: "%.1f", brush.native) as String
         sliderOpacity.value = Float(opacity)
         labelOpacity.text = NSString(format: "%.1f", opacity.native) as String
@@ -80,7 +80,7 @@ class SettingsViewController: UIViewController {
     
     @IBAction func sliderChanged(_ sender: UISlider) {
         if sender == sliderBrush {
-            brush = CGFloat(sender.value)
+            brush = CGFloat(sender.value)/5
             labelBrush.text = NSString(format: "%.2f", brush.native) as String
         }
         else {
